@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products</title>
+
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 40px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .add-btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 15px;
+        background-color: #28a745;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 600;
+      }
+
+      .add-btn:hover {
+        background-color: #1e7e34;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f9f9f9;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+
+      .username {
+        text-transform: capitalize;
+        color: chocolate;
+      }
+
+      .product-info {
+        color: #444;
+        font-size: 14px;
+      }
+
+      .product-info span {
+        font-weight: 600;
+      }
+
+      .actions a {
+        margin-left: 10px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .edit {
+        color: #007bff;
+      }
+
+      .edit:hover {
+        text-decoration: underline;
+      }
+
+      .delete,
+      .logout {
+        color: #dc3545;
+      }
+
+      .delete:hover,
+      .logout:hover {
+        text-decoration: underline;
+      }
+
+      .empty {
+        text-align: center;
+        color: #777;
+        margin-top: 20px;
+      }
+
+      .alert {
+        margin-top: 20px;
+        padding: 12px 15px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    /* fade-out animation */
+    .fade-out {
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+    }
+
+    </style>
+  </head>
+
+  <script>
+    setTimeout(() => {
+        const msg = document.getElementById("flash-message");
+        if (msg) {
+        msg.classList.add("fade-out");
+        setTimeout(() => msg.remove(), 500); // remove from DOM
+        }
+        }, 3000); // stays for 3 seconds
+    </script>
+
+
+  <body>
+    <div class="container">
+      <h1>Product List</h1>
+
+      <p>
+        Welcome <strong class="username">{{ request.user.username }}</strong>
+      </p>
+
+      {% if user.is_staff %}
+      <a href="/products/create/" class="add-btn">+ Add Product</a>
+      {% endif %}
+
+      <ul>
+        {% for product in products %}
+        <li>
+          <div class="product-info">
+            <span>Name:</span> {{ product.name }}, <span>Price:</span> {{
+            product.price }}, <span>Quantity:</span> {{ product.quantity }}
+          </div>
+
+          <div class="actions">
+            {% if user.is_staff %}
+            <a href="/products/update/{{ product.id }}/" class="edit">Edit</a>
+            <a href="/products/delete/{{ product.id }}/" class="delete"
+              >Delete</a
+            >
+            {% endif %}
+          </div>
+        </li>
+        {% empty %}
+        <p class="empty">No products available.</p>
+        {% endfor %}
+      </ul>
+      <form method="POST" action="/logout/">
+        {% csrf_token %}
+        <button type="submit" class="logout">Logout</button>
+      </form>
+
+      {% if messages %} 
+        {% for message in messages %}
+            <div class="alert alert-success" id="flash-message">{{ message }}</div>
+          {% endfor %}
+     {% endif %}
+    </div>
+  </body>
+</html>

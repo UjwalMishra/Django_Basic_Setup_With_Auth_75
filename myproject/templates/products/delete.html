@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Product</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            width: 360px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #dc3545;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #444;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+
+        strong {
+            color: #000;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #b52a37;
+        }
+
+        .cancel {
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            background-color: #6c757d;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .cancel:hover {
+            background-color: #545b62;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Delete Product</h1>
+
+        <p>
+            Are you sure you want to delete
+            <strong>{{ product.name }}</strong>?
+            <br>
+            This action cannot be undone.
+        </p>
+
+        <div class="actions">
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit">Yes, Delete</button>
+            </form>
+
+            <a href="/products/" class="cancel">Cancel</a>
+        </div>
+    </div>
+
+</body>
+</html>
